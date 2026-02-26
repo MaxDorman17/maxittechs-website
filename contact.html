@@ -93,6 +93,38 @@
                 </select>
               </div>
 
+              <div class="form-group">
+                <label for="business_location" class="form-label required">Business location</label>
+                <input type="text" id="business_location" name="business_location" class="form-input" autocomplete="address-level2" required>
+              </div>
+
+              <div class="form-group">
+                <label for="industry" class="form-label">Industry <span class="text-muted" style="font-weight:400;">(optional)</span></label>
+                <select id="industry" name="industry" class="form-input">
+                  <option value="">Please select</option>
+                  <option value="construction">Construction</option>
+                  <option value="legal">Legal</option>
+                  <option value="healthcare">Healthcare</option>
+                  <option value="finance">Finance</option>
+                  <option value="retail">Retail</option>
+                  <option value="manufacturing">Manufacturing</option>
+                  <option value="education">Education</option>
+                  <option value="professional_services">Professional Services</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group col-span-2">
+                <label for="existing_provider" class="form-label required">Existing IT provider</label>
+                <select id="existing_provider" name="existing_provider" class="form-input" required>
+                  <option value="" disabled selected>Please select</option>
+                  <option value="no_provider">No provider (currently unmanaged)</option>
+                  <option value="internal_it">Internal IT staff</option>
+                  <option value="external_msp">External MSP</option>
+                  <option value="freelancer">Freelancer / ad-hoc support</option>
+                </select>
+              </div>
+
               <div class="form-group col-span-2">
                 <label for="message" class="form-label required">Tell us about your requirements</label>
                 <textarea id="message" name="message" class="form-input" placeholder="Describe your current IT setup, any challenges you are facing, or what you are looking to achieve." required></textarea>
