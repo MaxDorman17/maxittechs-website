@@ -190,7 +190,7 @@ $body = implode("\n", array_values(array_filter($bodyLines, static fn($l) => $l 
 
 $payload = [
     'name'    => $name,
-    'email'   => $email,
+    'email'   => 'support@maxittechs.info',
     'subject' => $subject,
     'message' => $body,
 ];
