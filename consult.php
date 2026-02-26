@@ -99,16 +99,19 @@ function field(string $key, int $maxLen, bool $required = true): string {
     return $v;
 }
 
-$company = field('company', 120);
-$name    = field('name', 120);
-$email   = field('email', 180);
-$phone   = field('phone', 40, false);
-$users   = field('users', 10);
-$server  = strtolower(field('server', 10));
-$m365    = strtolower(field('m365', 10));
-$message = field('message', 2000);
+$company          = field('company', 120);
+$name             = field('name', 120);
+$email            = field('email', 180);
+$phone            = field('phone', 40, false);
+$users            = field('users', 10);
+$server           = strtolower(field('server', 10));
+$m365             = strtolower(field('m365', 10));
+$message          = field('message', 2000);
+$businessLocation = field('business_location', 200);
+$industry         = field('industry', 60, false);
+$existingProvider = field('existing_provider', 60);
 
-if ($company === '' || $name === '' || $email === '' || $users === '' || $server === '' || $m365 === '' || $message === '') {
+if ($company === '' || $name === '' || $email === '' || $users === '' || $server === '' || $m365 === '' || $message === '' || $businessLocation === '' || $existingProvider === '') {
     http_response_code(400);
     echo "Please complete all required fields.";
     exit;
@@ -140,17 +143,40 @@ if (!in_array($server, ['yes','no'], true) || !in_array($m365, ['yes','no'], tru
     exit;
 }
 
+$allowedProviders = [
+    'No provider (currently unmanaged)',
+    'Internal IT staff',
+    'External MSP',
+    'Freelancer / ad-hoc support',
+];
+if (!in_array($existingProvider, $allowedProviders, true)) {
+    http_response_code(400);
+    echo "Invalid selection.";
+    exit;
+}
+
+$allowedIndustries = [
+    'Construction', 'Legal', 'Healthcare', 'Finance',
+    'Retail', 'Manufacturing', 'Education', 'Professional Services', 'Other',
+];
+if ($industry !== '' && !in_array($industry, $allowedIndustries, true)) {
+    $industry = 'Other';
+}
+
 /* ==============================
    Build osTicket payload
    ============================== */
 
 $subject = "New consultation request – " . $company;
 
-$body = implode("\n", [
+$bodyLines = [
     "Company: {$company}",
     "Contact: {$name}",
     "Email: {$email}",
     $phone !== '' ? "Phone: {$phone}" : "Phone: (not provided)",
+    "Business location: {$businessLocation}",
+    $industry !== '' ? "Industry: {$industry}" : null,
+    "Existing IT provider: {$existingProvider}",
     "Users: {$usersInt}",
     "Server: " . strtoupper($server),
     "Microsoft 365: " . strtoupper($m365),
@@ -159,7 +185,8 @@ $body = implode("\n", [
     $message,
     "",
     "Source IP: {$ip}",
-]);
+];
+$body = implode("\n", array_values(array_filter($bodyLines, static fn($l) => $l !== null)));
 
 $payload = [
     'name'    => $name,
