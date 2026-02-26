@@ -1,0 +1,10 @@
+# Local secrets / config
+.consult_config.php
+
+# Runtime logs
+consult.log
+consult.log.*
+*.log
+
+# Stray files
+FE351C4A3505546A7E158B79208FC16F,
