@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 /*
  * MaxITTechs Consultation Intake
- * → osTicket API (origin bypass via CURLOPT_RESOLVE)
+ * → osTicket API
  * Fail-closed, rate limited, minimal logging
  */
 
@@ -24,12 +24,10 @@ if (!is_file($configPath)) {
 
 $config = require $configPath;
 
-$apiUrl   = (string)($config['osticket_api_url'] ?? '');
-$apiKey   = (string)($config['osticket_api_key'] ?? '');
-$apiHost  = (string)($config['osticket_api_host'] ?? '');
-$originIp = (string)($config['osticket_api_origin_ip'] ?? '');
+$apiUrl = (string)($config['osticket_api_url'] ?? '');
+$apiKey = (string)($config['osticket_api_key'] ?? '');
 
-if ($apiUrl === '' || $apiKey === '' || $apiHost === '' || $originIp === '') {
+if ($apiUrl === '' || $apiKey === '') {
     http_response_code(500);
     echo "Sorry — we couldn't submit your request right now.";
     exit;
@@ -190,7 +188,7 @@ $body = implode("\n", array_values(array_filter($bodyLines, static fn($l) => $l 
 
 $payload = [
     'name'    => $name,
-    'email'   => 'support@maxittechs.info',
+    'email'   => $email,
     'subject' => $subject,
     'message' => $body,
 ];
@@ -210,10 +208,6 @@ curl_setopt_array($ch, [
     CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_SLASHES),
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_TIMEOUT        => 10,
-    CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4,
-    CURLOPT_RESOLVE        => [
-        $apiHost . ':443:' . $originIp,
-    ],
 ]);
 
 $resBody = curl_exec($ch);
