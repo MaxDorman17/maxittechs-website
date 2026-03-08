@@ -7,6 +7,21 @@
   <meta name="description" content="MaxITTechs delivers managed IT support, cybersecurity, and IT project delivery for UK businesses. Structured, reliable, and professionally managed.">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:#0F2D4A;color:white;padding:16px;text-align:center;z-index:9999;">
+  This website uses cookies to ensure you get the best experience.
+  <button onclick="acceptCookies()" style="margin-left:12px;padding:6px 12px;">Accept</button>
+</div>
+
+<script>
+function acceptCookies() {
+  localStorage.setItem("cookiesAccepted", "true");
+  document.getElementById("cookie-banner").style.display = "none";
+}
+
+if(localStorage.getItem("cookiesAccepted")) {
+  document.getElementById("cookie-banner").style.display = "none";
+}
+</script>
 <body>
 
   <!-- Navigation -->
