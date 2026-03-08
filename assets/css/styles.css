@@ -1462,3 +1462,12 @@ select.form-input {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+.logo-item img {
+  max-height: 42px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.logo-item img:hover {
+  opacity: 1;
+}
